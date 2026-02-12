@@ -11,17 +11,17 @@
 11class Solution {
 12    public ListNode mergeKLists(ListNode[] lists) {
 13        if (lists == null || lists.length == 0)
-14            return null;
-15
-16        ListNode head = lists[0];
-17
-18        for (int i = 1; i < lists.length; i++) {
-19            head = merge(head, lists[i]);
-20        }
-21
-22        return head;
-23    }
-24
+14        return null;
+15       mergesort(lists,0,lists.length-1);
+16       return lists[0];
+17    }
+18   void mergesort(ListNode[] lists,int start,int end){
+19    if(start>=end) return;
+20    int mid=start+(end-start)/2;
+21    mergesort(lists,start,mid);
+22    mergesort(lists,mid+1,end);
+23    lists[start]=merge(lists[start],lists[mid+1]);
+24   }
 25    public ListNode merge(ListNode list1, ListNode list2) {
 26        if (list1 == null) return list2;
 27        if (list2 == null) return list1;
