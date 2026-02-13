@@ -8,31 +8,38 @@
 8 *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
 9 * }
 10 */
-11class Solution {
-12    public ListNode mergeKLists(ListNode[] lists) {
-13        if (lists == null || lists.length == 0)
-14        return null;
-15       mergesort(lists,0,lists.length-1);
-16       return lists[0];
-17    }
-18   void mergesort(ListNode[] lists,int start,int end){
-19    if(start>=end) return;
-20    int mid=start+(end-start)/2;
-21    mergesort(lists,start,mid);
-22    mergesort(lists,mid+1,end);
-23    lists[start]=merge(lists[start],lists[mid+1]);
-24   }
-25    public ListNode merge(ListNode list1, ListNode list2) {
-26        if (list1 == null) return list2;
-27        if (list2 == null) return list1;
-28
-29        if (list1.val < list2.val) {
-30            list1.next = merge(list1.next, list2);
-31            return list1;
-32        } else {
-33            list2.next = merge(list1, list2.next);
-34            return list2;
-35        }
-36    }
-37}
-38
+11 class Solution{
+12public ListNode mergeKLists(ListNode[] lists) {
+13
+14    if (lists == null || lists.length == 0)
+15        return null;
+16
+17    // Min Heap based on node value
+18    PriorityQueue<ListNode> pq =
+19        new PriorityQueue<>((a, b) -> Integer.compare(a.val, b.val));
+20
+21    // Add first node of each list
+22    for (ListNode node : lists) {
+23        if (node != null)
+24            pq.add(node);
+25    }
+26
+27    // Dummy node (same as root )
+28   // 0->1->....
+29    ListNode root = new ListNode(0);
+30    ListNode tail = root;
+31
+32    while (!pq.isEmpty()) {
+33        ListNode temp = pq.poll();
+34        tail.next = temp;
+35        tail = tail.next;  
+36        if (temp.next != null)
+37            pq.add(temp.next);
+38    }
+39
+40    return root.next;
+41   // 1->2->...
+42}
+43 }
+44
+45
