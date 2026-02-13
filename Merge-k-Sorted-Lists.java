@@ -9,37 +9,33 @@
 9 * }
 10 */
 11 class Solution{
-12public ListNode mergeKLists(ListNode[] lists) {
-13
-14    if (lists == null || lists.length == 0)
-15        return null;
-16
-17    // Min Heap based on node value
-18    PriorityQueue<ListNode> pq =
-19        new PriorityQueue<>((a, b) -> Integer.compare(a.val, b.val));
-20
-21    // Add first node of each list
-22    for (ListNode node : lists) {
-23        if (node != null)
-24            pq.add(node);
-25    }
+12 public ListNode mergeKLists(ListNode[] lists) {
+13        // List to collect all node values
+14        List<Integer> allValues = new ArrayList<>();
+15
+16        // Traverse each linked list
+17        for (ListNode head : lists) {
+18            while (head != null) {
+19                allValues.add(head.val);
+20                head = head.next;
+21            }
+22        }
+23
+24        // Sort the collected values
+25        Collections.sort(allValues);
 26
-27    // Dummy node (same as root )
-28   // 0->1->....
-29    ListNode root = new ListNode(0);
-30    ListNode tail = root;
-31
-32    while (!pq.isEmpty()) {
-33        ListNode temp = pq.poll();
-34        tail.next = temp;
-35        tail = tail.next;  
-36        if (temp.next != null)
-37            pq.add(temp.next);
-38    }
-39
-40    return root.next;
-41   // 1->2->...
-42}
-43 }
-44
-45
+27        // Create dummy node for result list
+28        ListNode dummy = new ListNode(0);
+29        ListNode curr = dummy;
+30
+31        // Create new nodes from sorted values
+32        for (int val : allValues) {
+33            curr.next = new ListNode(val);
+34            curr = curr.next;
+35        }
+36
+37        return dummy.next;
+38}
+39 }
+40
+41
