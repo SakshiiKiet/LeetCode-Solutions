@@ -1,12 +1,19 @@
 1class Solution {
-2    public int fib(int n) {
-3        if(n<=1) return n;
-4        int prev1=1,prev2=0;
-5        for(int i=2;i<=n;i++){
-6            int curr=prev1+prev2;
-7            prev2=prev1;
-8            prev1=curr;
-9        }
-10        return prev1;
-11    }
-12}
+2    int[] dp;
+3
+4    public int fib(int n) {
+5        dp = new int[n + 1];
+6        Arrays.fill(dp, -1);
+7        return solve(n);
+8    }
+9
+10    private int solve(int n) {
+11        if (n <= 1) return n;
+12
+13        if (dp[n] != -1) return dp[n];
+14
+15        dp[n] = solve(n - 1) + solve(n - 2);
+16        return dp[n];
+17    }
+18}
+19
