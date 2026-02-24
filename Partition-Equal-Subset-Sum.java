@@ -1,29 +1,45 @@
 1class Solution {
-2    static Boolean[][] dp;
-3    public boolean canPartition(int[] nums) {
-4        int n=nums.length;
-5        int totsum=0;
-6        for(int i=0;i<n;i++){
-7             totsum+=nums[i];
+2    public boolean canPartition(int[] nums) {
+3        int n = nums.length;
+4        int totalSum = 0;
+5
+6        for (int i=0;i<n;i++) {
+7            totalSum += nums[i];
 8        }
-9        if(totsum%2!=0) return false;
-10        int target=totsum/2;
-11        dp = new Boolean[n][target + 1];
-12        return subset(n-1,target,nums);
-13    }
-14    static boolean subset(int i, int sum, int arr[]) {
-15        if (sum == 0) return true;
-16        if (i == 0) return arr[0] == sum;
-17
-18        if (dp[i][sum] != null) return dp[i][sum];
+9
+10        // If total sum is odd, cannot partition
+11        if (totalSum % 2 != 0) return false;
+12
+13        int target = totalSum / 2;
+14
+15        boolean[] prev = new boolean[target + 1];
+16
+17        // base case: sum = 0
+18        prev[0] = true;
 19
-20        boolean notTake = subset(i - 1, sum, arr);
-21        boolean take = false;
-22
-23        if (sum >= arr[i]) {
-24            take = subset(i - 1, sum - arr[i], arr);
-25        }
-26
-27        return dp[i][sum] = notTake || take;
-28    }
-29}
+20        // first element
+21        if (nums[0] <= target) {
+22            prev[nums[0]] = true;
+23        }
+24
+25        for (int i = 1; i < n; i++) {
+26            boolean[] curr = new boolean[target + 1];
+27            curr[0] = true;
+28
+29            for (int j = 1; j <= target; j++) {
+30                boolean notTake = prev[j];
+31                boolean take = false;
+32
+33                if (j >= nums[i]) {
+34                    take = prev[j - nums[i]];
+35                }
+36
+37                curr[j] = notTake || take;
+38            }
+39
+40            prev = curr;
+41        }
+42
+43        return prev[target];
+44    }
+45}
