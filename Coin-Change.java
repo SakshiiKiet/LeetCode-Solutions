@@ -1,29 +1,33 @@
 1class Solution {
-2    int[][] dp;
-3    public int coinChange(int[] coins, int amount) {
-4        int n=coins.length;
-5        dp=new int[n][amount+1];
-6        for(int[] rows:dp){
-7            Arrays.fill(rows,-1);
-8        }
-9        int ans= coin(n-1,amount,coins);
-10        return ans>=Integer.MAX_VALUE/2?-1:ans;
-11    }
-12    int coin(int i,int target,int[] coins){
-13        if(i==0){
-14            if(target%coins[i]==0){
-15                return target/coins[i];
-16            }else{
-17                return Integer.MAX_VALUE/2;
-18            }
-19        }
-20        if(target==0) return 0;
-21        if(dp[i][target]!=-1) return dp[i][target];
-22        int notTake=0+coin(i-1,target,coins);
-23        int Take=Integer.MAX_VALUE/2;
-24        if(target>=coins[i]){
-25            Take=1+coin(i,target-coins[i],coins);
-26        }  
-27       return dp[i][target]=Math.min(Take,notTake);
-28    }
-29}
+2    public int coinChange(int[] coins, int amount) {
+3        int n = coins.length;
+4        int[] prev = new int[amount + 1];
+5
+6        // Base case: using only coin[0]
+7        for (int t = 0; t <= amount; t++) {
+8            if (t % coins[0] == 0)
+9                prev[t] = t / coins[0];
+10            else
+11                prev[t] = Integer.MAX_VALUE / 2;
+12        }
+13
+14        // Fill DP table
+15        for (int i = 1; i < n; i++) {
+16            int[] curr=new int[amount+1];
+17            for (int j = 0; j <= amount; j++) {
+18                int notTake = prev[j];
+19                int take = Integer.MAX_VALUE / 2;
+20
+21                if (j >= coins[i]) {
+22                    take = 1 + curr[j - coins[i]];
+23                }
+24
+25                curr[j] = Math.min(take, notTake);
+26            }
+27            prev=curr;
+28        }
+29
+30        int ans = prev[amount];
+31        return ans >= Integer.MAX_VALUE / 2 ? -1 : ans;
+32    }
+33}
