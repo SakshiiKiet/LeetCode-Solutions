@@ -3,27 +3,25 @@
 3    public int change(int amount, int[] coins) {
 4        int n=coins.length;
 5        dp=new int [n][amount+1];
-6        for(int[] rows:dp){
-7            Arrays.fill(rows,-1);
-8        }
-9        return count(n-1,amount,coins);
-10        
-11    }
-12    int count(int i,int target,int[] nums){
-13    if (i == 0) {
-14    if (target % nums[0] == 0) {
-15        return 1;
-16    } else {
-17        return 0;
-18    }
-19}
-20        if(dp[i][target]!=-1) return dp[i][target];
-21        int notTake=count(i-1,target,nums);
-22        int take=0;
-23        if(target>=nums[i]){
-24            take=count(i,target-nums[i],nums);
-25        }
-26        return dp[i][target]=take+notTake;
-27    }
-28        }
-29    
+6    
+7    for(int t=0;t<=amount;t++){
+8        if(t%coins[0]==0){
+9            dp[0][t]=1;
+10        }else{
+11            dp[0][t]=0;
+12        }
+13    }
+14    for(int i=1;i<n;i++){
+15        for( int j=0;j<=amount;j++){
+16        int notTake=dp[i-1][j];
+17        int take=0;
+18        if(j>=coins[i]){
+19            take=dp[i][j-coins[i]];
+20        }
+21         dp[i][j]=take+notTake;
+22        }
+23    }
+24        return dp[n-1][amount];
+25    }
+26        }
+27    
