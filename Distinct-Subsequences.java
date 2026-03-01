@@ -1,24 +1,25 @@
 1class Solution {
-2    int[][] dp;
-3    public int numDistinct(String s, String t) {
-4        int n=s.length();
-5        int m=t.length();
-6        dp=new int[n+1][m+1];
-7        for (int[] rows : dp) {
-8            Arrays.fill(rows, -1);
-9        }
-10        return ways(n,m,s,t);
-11    }
-12    int ways(int i,int j,String s,String t){
-13        if(j==0) return 1;
-14        if(i==0) return 0;
-15        if(dp[i][j]!=-1) return dp[i][j];
-16        if(s.charAt(i-1)==t.charAt(j-1)){
-17            dp[i][j]= ways(i-1,j-1,s,t)+ways(i-1,j,s,t);
-18        }else{
-19           dp[i][j]= ways(i-1,j,s,t);  
-20        }
-21        return dp[i][j];
-22    }
-23    
-24}
+2    public int numDistinct(String s, String t) {
+3        int n=s.length();
+4        int m=t.length();
+5        int[][] dp=new int[n+1][m+1];
+6        for(int i=0;i<=n;i++){
+7            dp[i][0]=1;
+8        }                          //Base Case    
+9        for(int j=1;j<=m;j++){ //j starts from 1 becoz in previous loop u already put at j=0==1
+10            dp[0][j]=0;
+11        }
+12
+13        for(int i=1;i<=n;i++){
+14            for(int j=1;j<=m;j++){
+15        if(s.charAt(i-1)==t.charAt(j-1)){
+16            dp[i][j]= dp[i-1][j-1]+dp[i-1][j];
+17        }else{
+18           dp[i][j]= dp[i-1][j];  
+19        }
+20         }
+21        }
+22        return dp[n][m];
+23    }
+24    
+25}
