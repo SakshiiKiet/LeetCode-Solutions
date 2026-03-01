@@ -6,18 +6,15 @@
 6        prev[0]=1;
 7
 8        for(int i=1;i<=n;i++){
-9            int[] curr=new int[m+1];
-10             curr[0]=1;
-11        for(int j=1;j<=m;j++){
-12        if(s.charAt(i-1)==t.charAt(j-1)){
-13            curr[j]= prev[j-1]+prev[j];
-14        }else{
-15           curr[j]= prev[j];  
+9        for(int j=m;j>=1;j--){
+10        if(s.charAt(i-1)==t.charAt(j-1)){
+11            prev[j]= prev[j-1]+prev[j];
+12        }else{
+13           prev[j]= prev[j];  
+14        }
+15         }
 16        }
-17         }
-18         prev=curr;
-19        }
-20        return prev[m];
-21    }
-22    
-23}
+17        return prev[m];
+18    }
+19    
+20}
