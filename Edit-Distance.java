@@ -1,21 +1,25 @@
 1class Solution {
-2    int[][] dp;
-3    public int minDistance(String word1, String word2) {
-4         int n=word1.length();
-5         int m=word2.length();
-6         dp=new int[n][m];
-7         for(int[] rows:dp){
-8            Arrays.fill(rows,-1);
-9         }
-10        return operations(n-1,m-1,word1,word2);
-11    }
-12    int operations(int i,int j,String s1, String s2){
-13        if(i<0) return j+1;
-14        if(j<0) return i+1;
-15        if(dp[i][j]!=-1) return dp[i][j];
-16        if(s1.charAt(i)==s2.charAt(j)){
-17          return dp[i][j]=0 + operations(i-1,j-1,s1,s2);
-18        } 
-19        return dp[i][j]=1+Math.min(operations(i,j-1,s1,s2),Math.min(operations(i-1,j,s1,s2),operations(i-1,j-1,s1,s2)));
-20    }
-21}
+2    public int minDistance(String word1, String word2) {
+3         int n=word1.length();
+4         int m=word2.length();
+5         int[][] dp=new int[n+1][m+1];
+6         
+7        for(int j=0;j<=m;j++){
+8            dp[0][j]=j;
+9        }
+10        for(int i=0;i<=n;i++){
+11            dp[i][0]=i;
+12        }
+13        for(int i=1;i<=n;i++){
+14            for(int j=1;j<=m;j++){
+15               if(word1.charAt(i-1)==word2.charAt(j-1)){
+16                 dp[i][j]=0 + dp[i-1][j-1];
+17               } 
+18               else{
+19                 dp[i][j]=1+Math.min(dp[i][j-1],Math.min(dp[i-1][j],dp[i-1][j-1]));
+20               }  
+21            }
+22        }
+23       return dp[n][m];
+24    }
+25}
