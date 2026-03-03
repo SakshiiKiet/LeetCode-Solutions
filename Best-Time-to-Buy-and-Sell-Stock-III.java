@@ -1,23 +1,23 @@
 1class Solution {
-2    int[][]dp;
-3    public int maxProfit(int[] prices) {
-4        int n = prices.length;
-5        dp=new int[n][4];
-6        for(int[] rows:dp){
-7            Arrays.fill(rows,-1);
-8        }
-9        return profit(0,0,prices);
-10    }
-11    int profit(int i,int trans,int[] prices){
-12        if(i==prices.length || trans==4)  return 0;
-13        if(dp[i][trans]!=-1) return dp[i][trans];
-14        int profit;
-15        if(trans%2==0){ //buy
-16          dp[i][trans]=Math.max((-prices[i]+profit(i+1,trans+1,prices)),(0+profit(i+1,trans,prices)));
-17        }else{
-18           dp[i][trans]=Math.max((prices[i]+profit(i+1,trans+1,prices)),(0+profit(i+1,trans,prices))) ;
+2    public int maxProfit(int[] prices) {
+3        int n = prices.length;
+4        int[][] dp=new int[n+1][4+1];
+5        for(int trans=0;trans<4;trans++){
+6            dp[n][trans]=0;
+7        }
+8        for(int i=1;i<=n;i++){
+9            dp[i][4]=0;
+10        }
+11        for(int i=n-1;i>=0;i--){
+12          for(int trans=3;trans>=0;trans--){
+13             if(trans%2==0){ //buy
+14          dp[i][trans]=Math.max(-prices[i]+dp[i+1][trans+1],0+dp[i+1][trans]);
+15        }else{
+16           dp[i][trans]=Math.max(prices[i]+dp[i+1][trans+1],0+dp[i+1][trans]) ;
+17        }
+18          }
 19        }
-20        return dp[i][trans];
-21    }
-22
+20       
+21        return dp[0][0];
+22    }
 23}
