@@ -1,21 +1,20 @@
 1class Solution {
-2    int[][]dp;
-3    public int lengthOfLIS(int[] nums) {
-4        int n=nums.length;
-5        dp=new int[n][n+1];
-6        for(int[] row : dp) {
-7            Arrays.fill(row, -1);
-8        }
-9        return length(0,-1,nums);
-10    }
-11    int length(int i,int pre_ind,int[] nums){
-12        if(i==nums.length) return 0;
-13        if(dp[i][pre_ind+1]!=-1) return dp[i][pre_ind+1];
-14        int notTake=0+length(i+1,pre_ind,nums); 
-15        int take=0;
-16        if(pre_ind==-1 || nums[i]>nums[pre_ind]){
-17             take=1+length(i+1,i,nums); 
-18        }
-19        return dp[i][pre_ind+1]=Math.max(take,notTake);
-20    }
-21}
+2    public int lengthOfLIS(int[] nums) {
+3        int n=nums.length;
+4        int[][] dp=new int[n+1][n+1];
+5        for(int prev=0;prev<=n;prev++){
+6            dp[n][prev]=0;
+7        }
+8        for(int i=n-1;i>=0;i--){
+9            for(int prev=i-1;prev>=-1;prev--){
+10              int notTake=0+dp[i+1][prev+1]; 
+11        int take=0;
+12        if(prev==-1 || nums[i]>nums[prev]){
+13             take=1+dp[i+1][i+1]; 
+14        }
+15         dp[i][prev+1]=Math.max(take,notTake);
+16            }
+17        }
+18        return dp[0][0];
+19    }
+20}
