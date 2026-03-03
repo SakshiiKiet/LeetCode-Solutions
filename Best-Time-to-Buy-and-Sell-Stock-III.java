@@ -1,32 +1,23 @@
 1class Solution {
-2    public int maxProfit(int[] prices) {
-3        int n = prices.length;
-4
-5        int[][] ahead = new int[2][3];
-6        int[][] curr = new int[2][3];
-7
-8        for(int i = n - 1; i >= 0; i--) {
-9            for(int buy = 0; buy <= 1; buy++) {
-10                for(int cap = 1; cap <= 2; cap++) {
-11
-12                    if(buy == 1) {
-13                        curr[buy][cap] = Math.max(
-14                            -prices[i] + ahead[0][cap],   // buy
-15                            ahead[1][cap]                 // not buy
-16                        );
-17                    } else {
-18                        curr[buy][cap] = Math.max(
-19                            prices[i] + ahead[1][cap-1],  // sell
-20                            ahead[0][cap]                 // not sell
-21                        );
-22                    }
-23                }
-24            }
-25
-26            // move current row to ahead
-27            ahead=curr;
-28        }
-29
-30        return ahead[1][2];
-31    }
-32}
+2    int[][]dp;
+3    public int maxProfit(int[] prices) {
+4        int n = prices.length;
+5        dp=new int[n][4];
+6        for(int[] rows:dp){
+7            Arrays.fill(rows,-1);
+8        }
+9        return profit(0,0,prices);
+10    }
+11    int profit(int i,int trans,int[] prices){
+12        if(i==prices.length || trans==4)  return 0;
+13        if(dp[i][trans]!=-1) return dp[i][trans];
+14        int profit;
+15        if(trans%2==0){ //buy
+16          dp[i][trans]=Math.max((-prices[i]+profit(i+1,trans+1,prices)),(0+profit(i+1,trans,prices)));
+17        }else{
+18           dp[i][trans]=Math.max((prices[i]+profit(i+1,trans+1,prices)),(0+profit(i+1,trans,prices))) ;
+19        }
+20        return dp[i][trans];
+21    }
+22
+23}
