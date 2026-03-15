@@ -1,20 +1,23 @@
-1class Solution {
-2    public int longestPalindrome(String s) {
-3        HashMap<Character,Integer>map=new HashMap<>();
-4         for(int i = 0; i < s.length(); i++) {
-5            char ch = s.charAt(i);
-6            map.put(ch, map.getOrDefault(ch, 0) + 1);
-7        }
-8        int length=0;
-9        boolean odd=false;
-10
-11        for(int f:map.values()){
-12            length+=(f/2)*2;
-13            if(f%2==1){
-14                odd=true;
+1import java.util.*;
+2
+3class Solution {
+4    public int longestPalindrome(String s) {
+5        
+6        HashSet<Character> set = new HashSet<>();
+7        int length = 0;
+8        
+9        for(char ch : s.toCharArray()) {
+10            if(set.contains(ch)) {
+11                set.remove(ch);
+12                length += 2;   // pair formed
+13            } else {
+14                set.add(ch);
 15            }
 16        }
-17        if(odd==true) length++;
-18        return length;
-19    }
-20}
+17        
+18        // if any single character left → center
+19        if(!set.isEmpty()) length++;
+20        
+21        return length;
+22    }
+23}
