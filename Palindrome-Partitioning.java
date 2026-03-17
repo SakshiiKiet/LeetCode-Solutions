@@ -1,35 +1,30 @@
 1class Solution {
-2
-3    public List<List<String>> partition(String s) {
-4        List<List<String>> res = new ArrayList<>();
-5        List<String> path = new ArrayList<>();
-6        func(0, s, path, res);
-7        return res;
+2    public List<List<String>> partition(String s) {
+3       List<List<String>>res=new ArrayList<>();
+4       List<String>path=new ArrayList<>();
+5       func(s,0,res,path);
+6       return res;
+7
 8    }
-9
-10    void func(int index, String s, List<String> path, List<List<String>> res) {
-11
-12        if (index == s.length()) {
-13            res.add(new ArrayList<>(path));
-14            return;
-15        }
-16
-17        for (int i = index; i < s.length(); i++) {
-18            if (isPalindrome(s, index, i)) {
-19
-20                path.add(s.substring(index, i + 1));
-21                func(i + 1, s, path, res);
-22                path.remove(path.size() - 1); // backtrack
-23            }
-24        }
-25    }
-26
-27    boolean isPalindrome(String s, int start, int end) {
-28        while (start <= end) {
-29            if (s.charAt(start++) != s.charAt(end--)) {
-30                return false;
-31            }
-32        }
-33        return true;
-34    }
-35}
+9    void func(String s,int index,List<List<String>>res,List<String>path){
+10        if(index==s.length()){
+11            res.add(new ArrayList<>(path));
+12            return;
+13        }
+14        for(int i=index;i<s.length();i++){
+15            if(isPallindrome(s,index,i)){
+16              path.add(s.substring(index,i+1));
+17              func(s,i+1,res,path);
+18              path.remove(path.size()-1);
+19            }
+20        }
+21    }
+22    boolean isPallindrome(String s,int start,int end){
+23        while(start<=end){
+24            if(s.charAt(start++)!=s.charAt(end--)){
+25                return false;
+26            }
+27        }
+28        return true;
+29    }
+30}
