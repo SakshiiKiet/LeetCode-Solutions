@@ -1,30 +1,31 @@
-1class Solution {
-2    public int[][] merge(int[][] intervals) {
-3
-4        int n = intervals.length;
-5        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+1
+2class Solution {
+3    public int[][] merge(int[][] intervals) {
+4
+5        List<int[]> res = new ArrayList<>();
 6
-7        boolean[] merged = new boolean[n];
-8        List<int[]> res = new ArrayList<>();
+7        if (intervals == null || intervals.length == 0)
+8            return res.toArray(new int[0][]);
 9
-10        for (int i = 0; i < n; i++) {
-11
-12            if (merged[i]) continue;
-13
-14            int start = intervals[i][0];
-15            int end = intervals[i][1];
-16
-17            for (int j = i + 1; j < n; j++) {
-18
-19                if (!merged[j] && intervals[j][0] <= end) {
-20                    end = Math.max(end, intervals[j][1]);
-21                    merged[j] = true;
-22                }
-23            }
-24
-25            res.add(new int[]{start, end});
-26        }
-27
-28        return res.toArray(new int[res.size()][]);
-29    }
-30}
+10        // sort by start
+11        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+12
+13        int start = intervals[0][0];
+14        int end = intervals[0][1];
+15
+16        for (int[] i : intervals) {
+17
+18            if (i[0] <= end) {
+19                end = Math.max(end, i[1]);
+20            } else {
+21                res.add(new int[]{start, end});
+22                start = i[0];
+23                end = i[1];
+24            }
+25        }
+26
+27        res.add(new int[]{start, end});
+28
+29        return res.toArray(new int[res.size()][]);
+30    }
+31}
