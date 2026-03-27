@@ -5,34 +5,29 @@
 5        Arrays.fill(color,-1);
 6        for(int i=0;i<V;i++){
 7            if(color[i]==-1){
-8                if(check(i,graph,color)==false){
+8                if(checkdfs(i,0,graph,color)==false){
 9                    return false;
 10                }
 11            }
 12        }
 13        return true;
 14    }
-15    boolean check(int start,int[][] graph,int[] color){
-16        Queue<Integer>q=new LinkedList<>();
-17        q.offer(start);
-18        color[start]=0;
-19        while(!q.isEmpty()){
-20            int node=q.peek();
-21            q.poll();
-22            for(int i=0;i<graph[node].length;i++){
-23                int neigh=graph[node][i];
-24
-25              //if adj node is not yet colored,u will give the opp color of node
-26                if(color[neigh]==-1){
-27                  color[neigh]=1-color[node];
-28                  q.offer(neigh);
+15    boolean checkdfs(int node,int col,int[][] graph,int[] color){
+16        color[node]=col;
+17            for(int i=0;i<graph[node].length;i++){
+18                int neigh=graph[node][i];
+19
+20              //if adj node is not yet colored,u will give the opp color of node
+21                if(color[neigh]==-1){
+22                  if(checkdfs(neigh,1-col,graph,color)==false){
+23                    return false;
+24                  }
+25                }
+26                // is the adj guy have the same color
+27                else if(color[neigh]==col){
+28                   return false;
 29                }
-30                // is the adj guy have the same color
-31                else if(color[neigh]==color[node]){
-32                   return false;
-33                }
-34            }
-35        }
-36        return true;
-37    }
-38}
+30            }
+31        return true;
+32    }
+33}
