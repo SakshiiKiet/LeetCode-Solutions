@@ -24,7 +24,7 @@
 24                  }
 25                }
 26                // is the adj guy have the same color
-27                else if(color[neigh]==col){
+27                else if(color[neigh]==color[node]){
 28                   return false;
 29                }
 30            }
