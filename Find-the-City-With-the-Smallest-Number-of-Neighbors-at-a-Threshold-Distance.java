@@ -1,43 +1,86 @@
-1class Solution {
-2    public int findTheCity(int n, int[][] edges, int distanceThreshold) {
-3        int[][] dis=new int[n][n];
-4        for(int i=0;i<n;i++){
-5            for(int j=0;j<n;j++){
-6                dis[i][j]=Integer.MAX_VALUE;
-7            }
-8        }
-9        for(int i=0;i<edges.length;i++){
-10            int u=edges[i][0];
-11            int v=edges[i][1];
-12            int wt=edges[i][2];
-13            dis[u][v]=wt;
-14            dis[v][u]=wt;
-15        }
-16        for(int i=0;i<n;i++){
-17            dis[i][i]=0;
-18        }
-19        for(int k=0;k<n;k++){
-20          for(int i=0;i<n;i++){
-21            for(int j=0;j<n;j++){
-22              if(dis[i][k]==Integer.MAX_VALUE || dis[k][j]==Integer.MAX_VALUE) continue;
-23              dis[i][j]=Math.min(dis[i][j],dis[i][k]+dis[k][j]);
-24                }
-25            }
-26        }
-27        int cityno=-1;
-28        int cmax=n;
-29        for(int city=0;city<n;city++){
-30            int c=0;
-31            for(int adjcity=0;adjcity<n;adjcity++){
-32                if(dis[city][adjcity]<=distanceThreshold){
-33                    c++;
-34                }
-35            }
-36             if(c <= cmax){
-37                cmax = c;
-38                cityno = city;
-39            }
-40        }
-41        return cityno;
-42    }
-43}
+1import java.util.*;
+2
+3class Pair {
+4    int node;
+5    int dist;
+6
+7    Pair(int node, int dist){
+8        this.node = node;
+9        this.dist = dist;
+10    }
+11}
+12
+13class Solution {
+14    public int findTheCity(int n, int[][] edges, int distanceThreshold) {
+15
+16        ArrayList<ArrayList<Pair>> adj = new ArrayList<>();
+17        for(int i = 0; i < n; i++){
+18            adj.add(new ArrayList<>());
+19        }
+20
+21        // Build graph
+22        for(int i = 0; i < edges.length; i++){
+23            int u = edges[i][0];
+24            int v = edges[i][1];
+25            int wt = edges[i][2];
+26
+27            adj.get(u).add(new Pair(v, wt));
+28            adj.get(v).add(new Pair(u, wt));
+29        }
+30
+31        int cityno = -1;
+32        int cmax = n;
+33
+34        // run Dijkstra from each city
+35        for(int src = 0; src < n; src++){
+36
+37            TreeSet<Pair> set = new TreeSet<>(
+38                (a, b) -> {
+39                    if(a.dist == b.dist) return a.node - b.node;
+40                    return a.dist - b.dist;
+41                }
+42            );
+43
+44            int[] dist = new int[n];
+45            Arrays.fill(dist, (int)1e9);
+46
+47            dist[src] = 0;
+48            set.add(new Pair(src, 0));
+49
+50            while(!set.isEmpty()){
+51                Pair curr = set.pollFirst();
+52                int node = curr.node;
+53                int dis = curr.dist;
+54
+55                for(Pair adjNode : adj.get(node)){
+56                    int v = adjNode.node;
+57                    int wt = adjNode.dist;
+58
+59                    if(dis + wt < dist[v]){
+60
+61                        if(dist[v] != (int)1e9){
+62                            set.remove(new Pair(v, dist[v]));
+63                        }
+64
+65                        dist[v] = dis + wt;
+66                        set.add(new Pair(v, dist[v]));
+67                    }
+68                }
+69            }
+70
+71            int c = 0;
+72            for(int i = 0; i < n; i++){
+73                if(dist[i] <= distanceThreshold){
+74                    c++;
+75                }
+76            }
+77
+78            if(c <= cmax){
+79                cmax = c;
+80                cityno = src;
+81            }
+82        }
+83
+84        return cityno;
+85    }
+86}
