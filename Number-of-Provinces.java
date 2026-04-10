@@ -38,7 +38,7 @@
 38        int n=isConnected.length;
 39        DisjointSet ds = new DisjointSet(n);
 40        for(int i=0;i<n;i++){
-41            for(int j=0;j<n;j++){
+41            for(int j=i+1;j<n;j++){
 42                if(isConnected[i][j]==1){
 43                    ds.unionBySize(i,j);
 44                }
@@ -46,7 +46,7 @@
 46        }
 47        int c=0;
 48        for(int i=0;i<n;i++){
-49            if(ds.parent[i]==i){
+49            if(ds.findPar(i)==i){
 50                c++;
 51            }
 52        }
