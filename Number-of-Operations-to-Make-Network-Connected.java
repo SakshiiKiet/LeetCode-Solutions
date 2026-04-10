@@ -38,34 +38,26 @@
 38    public int makeConnected(int n, int[][] connections) {
 39
 40        // Step 1: Check if enough edges exist
-41       int cextra=0;
-42        DisjointSet ds = new DisjointSet(n);
-43
-44        // Step 2: Connect components
-45        for (int[] edge : connections) {
-46            int u = edge[0];
-47            int v = edge[1];
-48            if(ds.findPar(u)==ds.findPar(v)){
-49                cextra++;
-50            }else{
-51                ds.unionBySize(u, v);
-52            }
-53            
-54        }
-55
-56        // Step 3: Count components
-57        int components = 0;
-58        for (int i = 0; i < n; i++) {
-59            if (ds.findPar(i) == i) {
-60                components++;
-61            }
-62        }
-63
-64        // Step 4: Need (components - 1) operations
-65        if(cextra>=components-1){
-66            return components-1;
-67        }else{
-68            return -1;
-69        }
-70    }
-71}
+41        if (connections.length < n - 1) return -1;
+42
+43        DisjointSet ds = new DisjointSet(n);
+44
+45        // Step 2: Connect components
+46        for (int[] edge : connections) {
+47            int u = edge[0];
+48            int v = edge[1];
+49            ds.unionBySize(u, v);
+50        }
+51
+52        // Step 3: Count components
+53        int components = 0;
+54        for (int i = 0; i < n; i++) {
+55            if (ds.findPar(i) == i) {
+56                components++;
+57            }
+58        }
+59
+60        // Step 4: Need (components - 1) operations
+61        return components - 1;
+62    }
+63}
