@@ -79,8 +79,8 @@
 79            }
 80        }
 81        // if all cells are one
-82        for(int i=0;i<n*n;i++){
-83            max=Math.max(max,ds.size[ds.findPar(i)]);
+82        if(max==0){
+83            return n*n;
 84        }
 85        return max;
 86    }
