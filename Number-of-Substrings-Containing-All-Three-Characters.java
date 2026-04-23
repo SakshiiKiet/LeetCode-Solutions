@@ -6,10 +6,11 @@
 6        for(int j=i;j<s.length();j++){
 7            hash[s.charAt(j)-'a']=1;
 8            if(hash[0]+hash[1]+hash[2]==3){
-9                c+=1;
-10            }
-11        }
-12       }
-13       return c;
-14    }
-15}
+9                c+=s.length()-j;
+10                break;
+11            }
+12        }
+13       }
+14       return c;
+15    }
+16}
