@@ -10,21 +10,12 @@
 10 */
 11class Solution {
 12    public ListNode middleNode(ListNode head) {
-13        int c=0;
-14        ListNode temp=head;
-15        while(temp!=null){
-16            temp=temp.next;
-17            c++;
+13        ListNode slow=head;
+14        ListNode fast=head;
+15        while(fast!=null && fast.next!=null){
+16            slow=slow.next;
+17            fast=fast.next.next;
 18        }
-19        int midNode=(c/2)+1;
-20        temp=head;
-21        while(temp!=null){
-22            midNode--;
-23            if(midNode==0){
-24                break;
-25            }
-26            temp=temp.next;
-27        }
-28        return temp;
-29    }
-30}
+19        return slow;
+20    }
+21}
