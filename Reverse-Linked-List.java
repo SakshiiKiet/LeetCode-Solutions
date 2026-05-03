@@ -10,17 +10,13 @@
 10 */
 11class Solution {
 12    public ListNode reverseList(ListNode head) {
-13        Stack<Integer>st=new Stack<>();
-14        ListNode temp=head;
-15        while(temp!=null){
-16            st.push(temp.val);
-17            temp=temp.next;
-18        }
-19        temp=head;
-20        while(temp!=null){
-21            temp.val=st.pop();
-22            temp=temp.next;
-23        }
-24        return head;
-25    }
-26}
+13        ListNode curr=head,prev=null;
+14        while(curr!=null){
+15            ListNode nxt=curr.next;
+16            curr.next=prev;
+17            prev=curr;
+18            curr=nxt;
+19        }
+20        return prev;
+21    }
+22}
