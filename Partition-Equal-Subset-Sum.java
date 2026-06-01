@@ -1,45 +1,44 @@
 1class Solution {
 2    public boolean canPartition(int[] nums) {
 3        int n = nums.length;
-4        int totalSum = 0;
-5
-6        for (int i=0;i<n;i++) {
-7            totalSum += nums[i];
+4
+5        int totalSum = 0;
+6        for (int num : nums) {
+7            totalSum += num;
 8        }
 9
-10        // If total sum is odd, cannot partition
+10        // If total sum is odd, partition not possible
 11        if (totalSum % 2 != 0) return false;
 12
 13        int target = totalSum / 2;
 14
-15        boolean[] prev = new boolean[target + 1];
+15        boolean[][] dp = new boolean[n][target + 1];
 16
-17        // base case: sum = 0
-18        prev[0] = true;
-19
-20        // first element
-21        if (nums[0] <= target) {
-22            prev[nums[0]] = true;
-23        }
-24
-25        for (int i = 1; i < n; i++) {
-26            boolean[] curr = new boolean[target + 1];
-27            curr[0] = true;
-28
-29            for (int j = 1; j <= target; j++) {
-30                boolean notTake = prev[j];
-31                boolean take = false;
+17        // Sum 0 is always possible
+18        for (int i = 0; i < n; i++) {
+19            dp[i][0] = true;
+20        }
+21
+22        // First element handling
+23        if (nums[0] <= target) {
+24            dp[0][nums[0]] = true;
+25        }
+26
+27        // Fill DP table
+28        for (int i = 1; i < n; i++) {
+29            for (int sum = 1; sum <= target; sum++) {
+30
+31                boolean notTake = dp[i - 1][sum];
 32
-33                if (j >= nums[i]) {
-34                    take = prev[j - nums[i]];
-35                }
-36
-37                curr[j] = notTake || take;
-38            }
-39
-40            prev = curr;
-41        }
-42
-43        return prev[target];
-44    }
-45}
+33                boolean take = false;
+34                if (sum >= nums[i]) {
+35                    take = dp[i - 1][sum - nums[i]];
+36                }
+37
+38                dp[i][sum] = take || notTake;
+39            }
+40        }
+41
+42        return dp[n - 1][target];
+43    }
+44}
