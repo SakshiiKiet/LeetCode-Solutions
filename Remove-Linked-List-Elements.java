@@ -10,20 +10,21 @@
 10 */
 11class Solution {
 12    public ListNode removeElements(ListNode head, int val) {
-13        while(head!=null && head.val==val){
-14            head=head.next;
-15        }
-16        ListNode temp=head;
-17        ListNode prev=null;
-18        while(temp!=null){
-19            if(temp.val==val){
-20                prev.next=prev.next.next;
-21            }
-22            else{
-23                prev=temp;
-24            }
-25            temp=temp.next;
-26        }
-27      return head;
-28    }
-29}
+13        if(head==null) return null;
+14        while(head!=null && head.val==val){
+15            head=head.next;
+16        }
+17        ListNode temp=head;
+18        ListNode prev=null;
+19        while(temp!=null){
+20            if(temp.val==val){
+21                prev.next=prev.next.next;
+22            }
+23            else{
+24                prev=temp;
+25            }
+26            temp=temp.next;
+27        }
+28      return head;
+29    }
+30}
