@@ -1,14 +1,18 @@
 class Solution {
+    int[]dp;
     public int rob(int[] nums) {
-        int prev=nums[0];
-        int prev2=0;
-        for(int i=1;i<nums.length;i++){
-            int not=0+prev;
-            int pick=nums[i]+prev2;
-            int curr=Math.max(not,pick);
-            prev2=prev;
-            prev=curr;
+        dp=new int[nums.length+1];
+        Arrays.fill(dp,-1);
+        return solve(nums.length-1,nums);
+    }
+    int solve(int i, int[] nums){
+        if(i==0) return nums[0];
+        if(dp[i]!=-1) return dp[i];
+        int not=solve(i-1,nums)+0;
+        int pick=nums[i];
+        if(i>1){
+            pick+=solve(i-2,nums);
         }
-        return prev;
+        return dp[i]=Math.max(not,pick);
     }
 }
