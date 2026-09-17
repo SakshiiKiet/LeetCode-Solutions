@@ -1,33 +1,28 @@
 class Solution {
+    int[][] dp;
     public int coinChange(int[] coins, int amount) {
-        int n = coins.length;
-        int[] prev = new int[amount + 1];
-
-        // Base case: using only coin[0]
-        for (int t = 0; t <= amount; t++) {
-            if (t % coins[0] == 0)
-                prev[t] = t / coins[0];
-            else
-                prev[t] = Integer.MAX_VALUE / 2;
+        int n=coins.length;
+        dp=new int[n][amount+1];
+        for(int[] rows:dp){
+            Arrays.fill(rows,-1);
         }
-
-        // Fill DP table
-        for (int i = 1; i < n; i++) {
-            int[] curr=new int[amount+1];
-            for (int j = 0; j <= amount; j++) {
-                int notTake = prev[j];
-                int take = Integer.MAX_VALUE / 2;
-
-                if (j >= coins[i]) {
-                    take = 1 + curr[j - coins[i]];
-                }
-
-                curr[j] = Math.min(take, notTake);
+       int ans= solve(n-1,amount,coins);
+       return ans>=Integer.MAX_VALUE/2?-1:ans;
+    }
+    int solve(int i,int amount,int[] coins){
+        if(i==0){
+            if(amount%coins[i]==0){
+                return amount/coins[i];
             }
-            prev=curr;
+            return Integer.MAX_VALUE/2;
         }
-
-        int ans = prev[amount];
-        return ans >= Integer.MAX_VALUE / 2 ? -1 : ans;
+        if(amount==0) return 0;
+        if(dp[i][amount]!=-1) return dp[i][amount];
+        int not=solve(i-1,amount,coins);
+        int take=Integer.MAX_VALUE/2;
+        if(amount>=coins[i]){
+            take=1+solve(i,amount-coins[i],coins);
+        }
+        return dp[i][amount]= Math.min(not,take);
     }
 }
