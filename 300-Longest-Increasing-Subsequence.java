@@ -1,22 +1,20 @@
 class Solution {
-    int[][] dp;
     public int lengthOfLIS(int[] nums) {
         int n=nums.length;
-        dp=new int[n][n+1];
-        for(int[] rows:dp){
-            Arrays.fill(rows,-1);
-        }
-        return solve(0,-1,nums);
-    }
-    int solve(int i,int prev,int[] nums){
-        int n=nums.length;
-        if(i==n) return 0;
-        if(dp[i][prev+1]!=-1) return dp[i][prev+1];
-        int not=solve(i+1,prev,nums);
+        int[][] dp=new int[n+1][n+1];
+       for(int prev=0;prev<=n;prev++){
+        dp[n][prev]=0;
+       }
+       for(int i=n-1;i>=0;i--){
+        for(int prev=i-1;prev>=-1;prev--){
+           int not=dp[i+1][prev+1];
         int take=0;
         if(prev==-1 || nums[i]>nums[prev]){
-            take=1+solve(i+1,i,nums);
+            take=1+dp[i+1][i+1];
         }
-        return  dp[i][prev+1]=Math.max(take,not);
+        dp[i][prev+1]=Math.max(take,not);
+        }
+       }
+        return dp[0][0];
     }
 }
