@@ -1,11 +1,13 @@
 class Solution {
     int[][] dp;
     public int numDistinct(String s, String t) {
-        dp=new int[s.length()+1][t.length()+1];
+        int n=s.length();
+        int m=t.length();
+        dp=new int[n+1][m+1];
         for(int[] rows:dp){
             Arrays.fill(rows,-1);
         }
-        return solve(s.length(),t.length(),s,t);
+        return solve(n,m,s,t);
     }
     int solve(int i,int j,String s, String t){
         if(j==0) return 1;
@@ -16,6 +18,5 @@ class Solution {
         }else{
             return dp[i][j]=solve(i-1,j,s,t);
         }
-       
     }
 }
