@@ -1,24 +1,22 @@
 class Solution {
-    int[][]dp;
     public int maxProfit(int[] prices,int fee) {
         int n=prices.length;
-        dp=new int[n][2];
-        for(int[] rows:dp){
-            Arrays.fill(rows,-1);
-        }
-       return profit(0,1,prices,fee);
-    }
-    int profit(int i,int buy,int[] prices,int fee){
-        if(i==prices.length) return 0;
-        int profit=0;
-        if(dp[i][buy]!=-1) return dp[i][buy];
+      int[][]  dp=new int[n+1][2];
+       
+        dp[n][0]=dp[n][1]=0;
+        for(int i=n-1;i>=0;i--){
+            for(int buy=1;buy>=0;buy--){
+                 int profit=0;
         if(buy==1){
-        profit=Math.max((-prices[i]+profit(i+1,0,prices,fee)), //buy
-                        (0+profit(i+1,1,prices,fee)));          //not buy       
+        profit=Math.max((-prices[i]+dp[i+1][0]), //buy
+                        (0+dp[i+1][1]));          //not buy       
      }else{
-        profit=Math.max((prices[i]-fee+profit(i+1,1,prices,fee)), //sell
-                        (0+profit(i+1,0,prices,fee)));          //not sell      
-     }
-        return dp[i][buy]= profit;
+        profit=Math.max((prices[i]-fee+dp[i+1][1]), //sell
+                        (0+dp[i+1][0]));          //not sell      
+              }
+              dp[i][buy]=profit;
+            }
+        }
+        return dp[0][1];
     }
 }
